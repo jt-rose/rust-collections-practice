@@ -44,6 +44,23 @@ fn main() {
     let median = num_list[median_idx];
     println!("The median is {}", median);
 
+    let mut num_count = HashMap::new();
+
+    let mut mode = num_list[0];
+    let mut highest_amount = 0;
+    for num in num_list {
+        let count = num_count.entry(num).or_insert(0);
+        *count += 1;
+
+        if count > &mut highest_amount {
+            highest_amount = *count;
+            mode = num;
+        }
+    }
+
+    println!("The mode is {}", mode);
+
+
     // Convert strings to pig latin.
     // The first consonant of each word is moved
     // to the end of the word and “ay” is added,
