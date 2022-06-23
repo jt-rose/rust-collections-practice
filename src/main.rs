@@ -105,4 +105,59 @@ fn main() {
     // or “Add Amir to Sales.” Then let the user retrieve
     // a list of all people in a department or all
     // people in the company by department, sorted alphabetically.
+
+    // I'm going to ignore the "text interface" and instead implement this as a struct
+    // which strikes me as more intuitive
+
+    enum Department {
+        ENGINEERING,
+        SALES,
+        MARKETING
+    }
+
+    struct Staff {
+        engineering: Vec<String>,
+        sales: Vec<String>,
+        marketing: Vec<String>
+    }
+
+    impl Staff {
+        pub fn new() -> Self {
+        Self {
+        engineering: Vec::new(),
+            sales: Vec::new(),
+            marketing: Vec::new(),
+        }
+        }
+
+        pub fn addEmployee(&mut self, name: &str, dept: Department) {
+            match dept {
+                Department::ENGINEERING => self.engineering.push(name.to_string()),
+                Department::SALES => self.sales.push(name.to_string()),
+                Department::MARKETING => self.marketing.push(name.to_string())
+            }
+        }
+        pub fn getEmployeesByDept(&self, dept: Department) -> Vec<String> {
+           let employees = match dept {
+                Department::ENGINEERING => &self.engineering,
+               Department::SALES => &self.sales,
+               Department::MARKETING => &self.marketing
+            };
+
+            // clone first for an immutable sort
+            let mut sorted = employees.clone();
+            sorted.sort();
+            sorted
+        }
+    }
+
+    let mut staff = Staff::new();
+    staff.addEmployee("Nina", Department::ENGINEERING);
+    staff.addEmployee("Himura", Department::SALES);
+    staff.addEmployee("Dracula", Department::SALES);
+
+    let sales_dept = staff.getEmployeesByDept(Department::SALES);
+    println!("{:?}", sales_dept);
 }
+
+
