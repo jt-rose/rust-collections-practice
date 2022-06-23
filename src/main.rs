@@ -69,6 +69,34 @@ fn main() {
     // added to the end instead (“apple” becomes “apple-hay”).
     //  Keep in mind the details about UTF-8 encoding!
 
+    let word_list = ["apple".to_string(), "banana".to_string(), "mango".to_string()];
+
+    let pig_latin: Vec<String> = word_list.iter().map(|word| {
+        if word.chars().count() == 0 {
+            "nada".to_string()
+        } else {
+            let first_char = word.chars().next().unwrap();
+            let char_count = word.chars().count();
+            let mut remaining_chars: String = word.chars().skip(1).take(char_count - 1).collect();
+            match first_char {
+                'a' | 'i' | 'o' | 'u' | 'e' | 'y' => {
+                    let mut new_word = word.clone();
+                    new_word.push_str("-hay");
+                    new_word
+                },
+                _ => {
+                    let mut start = "-".to_string();
+                    start.push_str(&first_char.to_string());
+                    start.push_str("ay");
+                    remaining_chars.push_str(&start);
+                    remaining_chars
+                }
+            }
+        }
+    }).collect();
+
+    println!("{:?}", pig_latin);
+
     // Using a hash map and vectors,
     // create a text interface to
     // allow a user to add employee names
